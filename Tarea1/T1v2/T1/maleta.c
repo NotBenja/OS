@@ -1,10 +1,11 @@
 #include <stdio.h>
 #include <pthread.h>
+#include <stdlib.h>
 
 typedef struct {
     double *w;
     double *v;
-    int z;
+    int *z;
     int n;
     double maxW;
     int k;
@@ -16,10 +17,10 @@ void *thread(void *p){
     Args *args = (Args *)p;
     //Reunimos los argumentos para hacer las elecciones
     double *w = args->w;
-    double *v = args-v;
-    int *z = (int *)malloc(sizeof(int));
+    double *v = args->v;
     double best = -1;
     int n = args -> n;
+    int *z = (int *)malloc(sizeof(int)*n);
     double maxW = args->maxW;
     int k = args->k;
 
@@ -42,7 +43,7 @@ void *thread(void *p){
     }
     args-> z = z; 
     args-> best = best;
-    free(*z);
+    free(z);
     return NULL;
 }
 
@@ -56,9 +57,14 @@ double llenarMaletaPar(double w[], double v[], int z[], int n, double maxW,int k
     }
     for (int i = 0; i < 8; k++){
         pthread_join(p_id[i], NULL);
-        if (args[i].best > best)
+        if (args[i].best > best){
             best = args[i].best;
-            z = args[i].z;
+            int j = 0;
+            while(args[i].z){
+                z[j] = args[i].z[j];
+                j++;
+            }
+        }
     }
     return best;
 }
