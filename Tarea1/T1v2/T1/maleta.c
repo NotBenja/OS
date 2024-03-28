@@ -22,13 +22,12 @@ void *thread(void *p){
     int n = args -> n;
     double maxW = args->maxW;
     int k = args->k;
-    RandGen *gen= makeRandGen();
 
     while(k--){
         int sumW=0, sumV=0;
         int x[n];
         for(int i = 0; i < n; i++){
-            x[i]= random0or1(gen) && sumW+w[i]<=maxW ? 1 : 0;
+            x[i]= random0or1() && sumW+w[i]<=maxW ? 1 : 0;
             if(x[i]==1){
                 sumW += w[i];
                 sumV += v[i];
@@ -47,8 +46,6 @@ void *thread(void *p){
     return NULL;
 }
 
-double llenarMaletaSec(double w[], double v[], int z[], int n, double maxW,int k);
-
 double llenarMaletaPar(double w[], double v[], int z[], int n, double maxW,int k){
     double best = -1;
     pthread_t p_id[8];
@@ -65,4 +62,3 @@ double llenarMaletaPar(double w[], double v[], int z[], int n, double maxW,int k
     }
     return best;
 }
- 
