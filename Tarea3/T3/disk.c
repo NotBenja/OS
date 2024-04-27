@@ -1,5 +1,4 @@
 #include <stdlib.h>
-#include <time.h>
 #include <unistd.h>
 #include <string.h>
 #include <stdio.h>
@@ -11,12 +10,15 @@
 #define TRUE 1
 #define FALSE 0
 
+
 PriQueue *q;
 PriQueue *q2;
 pthread_mutex_t m;
-int current_track;
+//Pista en la que se encuentra cabezal del disco
+int current_track = 0;
+//Cola actual de donde se extraen elementos (se usa TRUE como switch)
 int current_queue = TRUE;
-int traspaso = FALSE;
+//Variable que indica si el disco está en uso
 int using = FALSE;
 
 //Estructura para requests: request
@@ -26,10 +28,8 @@ typedef struct {
   pthread_cond_t c;
 }Request;
 
-/*La clave está en que las requests en las colas están ordenadas de menor a mayor track,
-  por lo que siempre se extraerá desde la request con menor track a la que tiene la mayor.
-*/
 
+//Función que retorna una cola en base a un id.
 PriQueue *selectQueue(int q_id){
   PriQueue *selectedQueue = NULL;
   if(q_id == TRUE){
@@ -40,39 +40,27 @@ PriQueue *selectQueue(int q_id){
   return selectedQueue;
 }
 
+//Funcion que realiza get en cola seleccionada
+/*La clave está en que las requests en las colas están ordenadas de menor a mayor track,
+  por lo que siempre se extraerá desde la request con menor track a la que tiene la mayor.
+*/
 Request *getRequest(PriQueue *selectedQueue) {
-  //Inicializamos la request prioritaria
   Request *req = NULL;
-  Request *ptr;
-  //Invocamos a la cola sin seleccionar, en caso de sacar elementos que no
-  //cumplen con t>=current_t
-  PriQueue *unselectedQueue = selectQueue(!current_queue);
-  while(!emptyPriQueue(selectedQueue)){
-    //Llamamos a la request con menor track
-    ptr = priGet(selectedQueue);
-    //Si cumple t>=current_t, la guardamos
-    if(ptr->track >= current_track){
-      req = ptr;
-      break;
-    } else {
-      //Si no, encolamos en la otra cola
-      traspaso = TRUE;
-      priPut(unselectedQueue, ptr, ptr->track);
+  while (!emptyPriQueue(selectedQueue)) {
+    Request *ptr = priGet(selectedQueue);//Obtener la siguiente solicitud
+    if (ptr == NULL) { //Siempre verificar si es NULL
+      continue; //Saltar este ciclo si la solicitud es NULL
+    }
+    if (ptr->track >= current_track) { //Si cumple la condición
+      req = ptr; //Asignar la solicitud válida
+      break; //Salir del bucle si encontramos una solicitud válida
     }
   }
-  //Una vez que se quitan todos los elementos con t>=current_t
-  //Se reinicia la búsqueda desde 0
-  if(emptyPriQueue(selectedQueue) && traspaso){
-    current_track = 0;
-  }
-  //Retornamos la request que cumple con la desigualdad
-  //Se retorna NULL si: 
-  //1.La cola actual está vacía 
-  //2.Ningún elemento cumplía la desigualdad
-  return req;
+
+  return req; //Puede ser NULL si no hay solicitud válida
 }
 
-//Estructura para ordenar request:PriQueue
+
 void iniDisk(void) {
   pthread_mutex_init(&m,NULL);
   q = makePriQueue();
@@ -87,17 +75,28 @@ void cleanDisk(void) {
 
 void requestDisk(int track) {
   pthread_mutex_lock(&m);
+  //Seleccionamos la cola actual
   PriQueue *selectedQueue = selectQueue(current_queue);
   if(!using){
+    //Si el disco no se está usando, actualizamos su estado y el cabezal
     using = TRUE;
+    current_track = track;
   } else {
+    //En caso contrario, hacemos una request 
+    //Decisión: Se tratará al número de pista de la request como la prioridad
     Request req = {FALSE, track, PTHREAD_COND_INITIALIZER};
-    //Decisión: Se tratará al número de pista como la prioridad
+    //Si sabemos que hay elementos pendientes que no cumplieron con track >= current_track
+    //Entonces los nuevos elementos a ingresar que no cumplan deben ir a la cola de respaldo
+    if(!(track >= current_track)){
+      selectedQueue = selectQueue(!current_queue);
+    }
+    //Si hay un elemento a ingresar que cumpla la desigualdad, entonces debemos
+    //Encolarlo en la cola con todos aquellos elementos que también cumplen
     priPut(selectedQueue, &req, req.track);
+    //Mientras la request no sea atendida, debemos esperar
     while(!req.ready){
       pthread_cond_wait(&req.c, &m);
     }
-    using = TRUE;
   }
   pthread_mutex_unlock(&m);
 }
@@ -105,27 +104,25 @@ void requestDisk(int track) {
 void releaseDisk() {
   pthread_mutex_lock(&m);
   if(emptyPriQueue(q) && emptyPriQueue(q2)){
+    //Caso base, si no hay peticiones es porque el disco no está en uso
+    //O porque solo se ha atendido un acceso y ya terminó su tarea.
     using = FALSE;
   } else{
     PriQueue *selectedQueue = selectQueue(current_queue);
-    PriQueue *unselectedQueue = selectQueue(current_queue);
-    Request *req = NULL;
-    //En caso de estar en traspaso, se debe vaciar la lista no seleccionada
-    if(traspaso && emptyPriQueue(selectedQueue)){
-      req = priGet(unselectedQueue);
-    } else{
-      if(emptyPriQueue(selectedQueue)){
-      //Se intercambia con la otra lista, que no puede ser vacía
-      current_queue = !current_queue;
-      selectedQueue = selectQueue(current_queue);
-      req = getRequest(selectedQueue);
-      } 
+    //Si la cola elegida está vacía, intercambiarla por la otra,
+    //la cual no puede estar vacía por el if anterior
+    if(emptyPriQueue(selectedQueue)){
+        current_queue = !current_queue;
+        current_track = 0;
+        selectedQueue = selectQueue(current_queue);
     }
-    //Se obtiene la request con más prioridad
+    //Obtenemos la request con mayor prioridad
+    Request *req = getRequest(selectedQueue);
+    //Declaramos que la request fue atendida y cambiamos el cabezal del disco
     req->ready = TRUE;
-    current_track = req->track;
-    using = FALSE;
+    //Ya no estamos usando el disco, así que despertamos al siguiente thread
     pthread_cond_signal(&req->c);
   }
   pthread_mutex_unlock(&m);
 }
+
