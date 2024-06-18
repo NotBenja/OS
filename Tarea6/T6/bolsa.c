@@ -23,7 +23,7 @@ int* VL = NULL;
 
 char *nombre_comprador = NULL;
 
-
+// Función para resetear las variables globales
 void reset() {
   precio_min = INT_MAX;
   vendedor_min = NULL;
@@ -54,6 +54,7 @@ int vendo(int precio, char *vendedor, char *comprador) {
   precio_min = precio;
   VL = &vl;
   vendedor_min = vendedor;
+  // Le damos la direccion de memoria del comprador a la variable global 
   nombre_comprador = comprador; 
   // Luego esperamos, actualizamos el puntero al nuevo lck y lo bloqueamos
   int vend_lck = CLOSED;
@@ -77,7 +78,6 @@ int vendo(int precio, char *vendedor, char *comprador) {
 
 int compro(char *comprador, char *vendedor) {
   spinLock(&mutex_lck);
-  // Como llamamos a un comprador, entonces copiamos su nombre en la variable global
   // Inicializamos la cantidad a pagar
   int pago = 0;
   // Si hay un vendedor, entonces lo despertamos y copiamos su nombre en la variable local
@@ -88,8 +88,9 @@ int compro(char *comprador, char *vendedor) {
     pago = precio_min;
     // Copiamos el nombre del vendedor en la variable local
     strcpy(vendedor, vendedor_min); 
-    // Como ya se concretó la compra, entonces reseteamos las variables globales
+    // Como llamamos a un comprador, entonces copiamos su nombre en la variable global
     strcpy(nombre_comprador, comprador);
+    // Como ya se concretó la compra, entonces reseteamos las variables globales
     spinUnlock(vend_lck_global);
     reset();
   }

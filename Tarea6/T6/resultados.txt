@@ -14,8 +14,8 @@ pedro: vendo a 7
 pedro: 2da. venta rechazada
 Se lanzo diego
 diego: compro
-diego: ok
 juan: ok
+diego: ok
 Test del enunciado aprobado
 
 -------------
@@ -41,17 +41,17 @@ Partieron
 ..........................
 comp0 hara una pausa de 3 segundos
 comp0 hara la ultima compra
-comp0 hizo 2652 compras
-comp1 hizo 2677 compras
-comp2 hizo 2618 compras
-comp3 hizo 2602 compras
-comp4 hizo 2661 compras
-comp5 hizo 2609 compras
-comp6 hizo 2701 compras
-comp7 hizo 2638 compras
-comp8 hizo 2664 compras
-comp9 hizo 2683 compras
-Se hicieron en total 26505 compras
+comp0 hizo 2615 compras
+comp1 hizo 2555 compras
+comp2 hizo 2649 compras
+comp3 hizo 2684 compras
+comp4 hizo 2671 compras
+comp5 hizo 2644 compras
+comp6 hizo 2682 compras
+comp7 hizo 2620 compras
+comp8 hizo 2650 compras
+comp9 hizo 2677 compras
+Se hicieron en total 26447 compras
 Ok
 
 ===============================================
@@ -95,17 +95,17 @@ Partieron
 ...................
 comp0 hara una pausa de 3 segundos
 comp0 hara la ultima compra
-comp0 hizo 2091 compras
-comp1 hizo 1478 compras
-comp2 hizo 1984 compras
-comp3 hizo 2175 compras
-comp4 hizo 1985 compras
-comp5 hizo 1939 compras
-comp6 hizo 2126 compras
-comp7 hizo 1821 compras
-comp8 hizo 2161 compras
-comp9 hizo 2051 compras
-Se hicieron en total 19811 compras
+comp0 hizo 2166 compras
+comp1 hizo 2093 compras
+comp2 hizo 1498 compras
+comp3 hizo 2011 compras
+comp4 hizo 2100 compras
+comp5 hizo 2023 compras
+comp6 hizo 1754 compras
+comp7 hizo 1938 compras
+comp8 hizo 1590 compras
+comp9 hizo 2158 compras
+Se hicieron en total 19331 compras
 Ok
 Felicitaciones.  Su tarea paso todos los tests
 ==== run-g ====
@@ -122,8 +122,8 @@ pedro: vendo a 7
 pedro: 2da. venta rechazada
 Se lanzo diego
 diego: compro
-diego: ok
 juan: ok
+diego: ok
 Test del enunciado aprobado
 
 -------------
@@ -146,20 +146,20 @@ El test de robustez: se lanzaran 10 compradores y 100 vendedores
 Cada comprador intentara 3000 compras
 Cada . son 1000 compraventas exitosas
 Partieron
-.........................
+........................
 comp0 hara una pausa de 3 segundos
 comp0 hara la ultima compra
-comp0 hizo 2629 compras
-comp1 hizo 2439 compras
-comp2 hizo 2521 compras
-comp3 hizo 2457 compras
-comp4 hizo 2573 compras
-comp5 hizo 2624 compras
-comp6 hizo 2557 compras
-comp7 hizo 2519 compras
-comp8 hizo 2545 compras
-comp9 hizo 2544 compras
-Se hicieron en total 25408 compras
+comp0 hizo 2465 compras
+comp1 hizo 2470 compras
+comp2 hizo 2517 compras
+comp3 hizo 2502 compras
+comp4 hizo 2480 compras
+comp5 hizo 2447 compras
+comp6 hizo 2483 compras
+comp7 hizo 2503 compras
+comp8 hizo 2446 compras
+comp9 hizo 2395 compras
+Se hicieron en total 24708 compras
 Ok
 
 ===============================================
@@ -203,17 +203,17 @@ Partieron
 .................
 comp0 hara una pausa de 3 segundos
 comp0 hara la ultima compra
-comp0 hizo 2046 compras
-comp1 hizo 1649 compras
-comp2 hizo 1422 compras
-comp3 hizo 1859 compras
-comp4 hizo 2036 compras
-comp5 hizo 1973 compras
-comp6 hizo 2157 compras
-comp7 hizo 1561 compras
-comp8 hizo 1371 compras
-comp9 hizo 1598 compras
-Se hicieron en total 17672 compras
+comp0 hizo 1908 compras
+comp1 hizo 1879 compras
+comp2 hizo 1776 compras
+comp3 hizo 1369 compras
+comp4 hizo 2029 compras
+comp5 hizo 1960 compras
+comp6 hizo 1923 compras
+comp7 hizo 1892 compras
+comp8 hizo 1714 compras
+comp9 hizo 1529 compras
+Se hicieron en total 17979 compras
 Ok
 Felicitaciones.  Su tarea paso todos los tests
 ==== run ====
@@ -254,20 +254,20 @@ El test de robustez: se lanzaran 10 compradores y 100 vendedores
 Cada comprador intentara 3000 compras
 Cada . son 1000 compraventas exitosas
 Partieron
-.........................
+..........................
 comp0 hara una pausa de 3 segundos
 comp0 hara la ultima compra
-comp0 hizo 2703 compras
-comp1 hizo 2742 compras
-comp2 hizo 2463 compras
-comp3 hizo 2736 compras
-comp4 hizo 2272 compras
-comp5 hizo 2493 compras
-comp6 hizo 2301 compras
-comp7 hizo 2673 compras
-comp8 hizo 2529 compras
-comp9 hizo 2417 compras
-Se hicieron en total 25329 compras
+comp0 hizo 2616 compras
+comp1 hizo 2613 compras
+comp2 hizo 2559 compras
+comp3 hizo 2606 compras
+comp4 hizo 2610 compras
+comp5 hizo 2603 compras
+comp6 hizo 2611 compras
+comp7 hizo 2643 compras
+comp8 hizo 2608 compras
+comp9 hizo 2615 compras
+Se hicieron en total 26084 compras
 Ok
 
 ===============================================
@@ -311,16 +311,16 @@ Partieron
 ...................
 comp0 hara una pausa de 3 segundos
 comp0 hara la ultima compra
-comp0 hizo 2115 compras
-comp1 hizo 2085 compras
-comp2 hizo 2125 compras
-comp3 hizo 1928 compras
-comp4 hizo 2082 compras
-comp5 hizo 1700 compras
-comp6 hizo 2195 compras
-comp7 hizo 2188 compras
-comp8 hizo 1745 compras
-comp9 hizo 1669 compras
-Se hicieron en total 19832 compras
+comp0 hizo 2153 compras
+comp1 hizo 2109 compras
+comp2 hizo 2145 compras
+comp3 hizo 1790 compras
+comp4 hizo 1702 compras
+comp5 hizo 1779 compras
+comp6 hizo 2443 compras
+comp7 hizo 2214 compras
+comp8 hizo 2077 compras
+comp9 hizo 1475 compras
+Se hicieron en total 19887 compras
 Ok
 Felicitaciones.  Su tarea paso todos los tests
